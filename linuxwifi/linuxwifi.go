@@ -96,7 +96,7 @@ func (sensor *wifi) readingsByInterface(line string) (string, map[string]interfa
 
 	return iface, map[string]interface{}{
 		"link_quality": int(link),
-		"level_dB":     int(level),
-		"noise_dB":     int(noise),
+		"level_dBm":     int(level),
+		"noise_dBm":     int(noise),
 	}, nil
 }

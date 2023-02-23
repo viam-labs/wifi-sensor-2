@@ -52,13 +52,13 @@ IFACE1: XXXX   59.  -51.  -257        X      X      X      X  XXXXX        X
 	expected := map[string]interface{}{
 		"IFACE0": map[string]interface{}{
 			"link_quality": int(58),
-			"level_dB":     int(-52),
-			"noise_dB":     int(-256),
+			"level_dBm":     int(-52),
+			"noise_dBm":     int(-256),
 		},
 		"IFACE1": map[string]interface{}{
 			"link_quality": int(59),
-			"level_dB":     int(-51),
-			"noise_dB":     int(-257),
+			"level_dBm":     int(-51),
+			"noise_dBm":     int(-257),
 		},
 	}
 
