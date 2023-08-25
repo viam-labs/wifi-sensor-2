@@ -1,0 +1,13 @@
+{
+  "name": "viam:golang-wifi-example",
+  "visibility": "private",
+  "url": "https://github.com/viam-labs/wifi-sensor",
+  "description": "Example module for golang",
+  "models": [
+    {
+      "api": "rdk:component:sensor",
+      "model": "viam:sensor:linux-wifi"
+    }
+  ],
+  "entrypoint": "wifi"
+}

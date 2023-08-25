@@ -21,7 +21,7 @@ import (
 )
 
 // Model represents a linux wifi strength sensor model.
-var Model = resource.NewModel("viam-labs", "sensor", "linux-wifi")
+var Model = resource.NewModel("viam", "sensor", "linux-wifi")
 
 const wirelessInfoPath string = "/proc/net/wireless"
 
