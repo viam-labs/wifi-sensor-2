@@ -21,7 +21,7 @@ func mainWithArgs(ctx context.Context, args []string, logger golog.Logger) error
 		return err
 	}
 
-	wifiSensorModule.AddModelFromRegistry(ctx, sensor.Subtype, linuxwifi.Model)
+	wifiSensorModule.AddModelFromRegistry(ctx, sensor.API, linuxwifi.Model)
 
 	err = wifiSensorModule.Start(ctx)
 	defer wifiSensorModule.Close(ctx)

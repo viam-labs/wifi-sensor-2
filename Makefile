@@ -1,4 +1,4 @@
-wifi: *.go */*.go
+wifi: *.go */*.go go.*
 	# the executable
 	go build -o $@ -ldflags "-s -w" -tags osusergo,netgo
 	file $@

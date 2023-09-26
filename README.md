@@ -1,43 +1,45 @@
 # wifi-sensor
 
-A sensor that detects wifi strength
+A Viam sensor implementation that reads the system's wifi information. This is an example repo to show how to:
+1. Make a Viam module with Go
+1. Build it in CI and upload to the registry
 
-## Usage
+## Running this with local exec
 
-### 1. Build binary
+For iterative development, you can run a module locally (laptop or robot) and test it using a local instance of the RDK.
 
-If you clone this repository to the target environment where you run your Viam robot, then you can build a binary named `wifi` with:
+Create the binary with `make wifi`.
 
-```
-go build -o wifi
-```
+Your config will look something like this (replace /path/to/wifi-sensor with the actual path on your system):
 
-Alternatively, if you want to build a binary for a different target environment, please use the [viam canon tool](https://github.com/viamrobotics/canon).
-
-### 2. Add to robot configuration
-
-Copy the binary to the robot (system where viam-server is running) and add the following to your configuration:
-
-```
-  ...
-  "modules": [
-    ...,
-    {
-      "executable_path": "<path_to_binary>",
-      "name": "wifisensor"
-    },
-    ...,
-  ],
+```json
+{
   "components": [
-    ...,
+    {
+      "name": "whatever",
+      "model": "viam:sensor:linux-wifi",
+      "type": "sensor"
+    }
+  ],
+  "modules": [
     {
       "name": "wifi",
-      "type": "sensor",
-      "model": "viam-labs:sensor:linux-wifi"
-    },
-    ...,
-  ],
-  ...
+      "executable_path": "/path/to/wifi-sensor/wifi",
+      "type": "local"
+    }
+  ]
+}
 ```
 
-For more information on how to configure modular components, [see this example](https://docs.viam.com/services/slam/run-slam-cartographer/#step-1-add-your-rdiplar-as-a-modular-component).
+Our docs for running local modules are [here](https://docs.viam.com/extend/modular-resources/configure/#local-modules).
+
+## What's in this repo
+
+- .github/workflows: CI and deploy logic
+- Makefile: instructions for building the binary and bundling it into a tarball
+- \*.go: the implementation
+- meta.json: module configuration file
+
+## Forking this repo
+
+If you fork this and want to deploy to the registry, you'll need to update namespaces and CI secrets. Full fork instructions are in the [Python module example](https://github.com/viam-labs/python-example-module#forking-this-repo).

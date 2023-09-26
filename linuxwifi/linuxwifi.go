@@ -13,10 +13,7 @@ import (
 	"github.com/edaniels/golog"
 	"github.com/pkg/errors"
 
-	"go.viam.com/rdk/components/generic"
 	"go.viam.com/rdk/components/sensor"
-	"go.viam.com/rdk/config"
-	"go.viam.com/rdk/registry"
 	"go.viam.com/rdk/resource"
 )
 
@@ -25,18 +22,28 @@ var Model = resource.NewModel("viam", "sensor", "linux-wifi")
 
 const wirelessInfoPath string = "/proc/net/wireless"
 
+// stub config to satisfy resource.Registration
+type StubConfig struct{}
+
+func (cfg StubConfig) Validate(path string) ([]string, error) {
+	return []string{}, nil
+}
+
 func init() {
-	registry.RegisterComponent(
-		sensor.Subtype,
+	resource.RegisterComponent(
+		sensor.API,
 		Model,
-		registry.Component{Constructor: func(
-			_ context.Context,
-			_ registry.Dependencies,
-			_ config.Component,
-			logger golog.Logger,
-		) (interface{}, error) {
-			return newWifi(logger, wirelessInfoPath)
-		}})
+		resource.Registration[sensor.Sensor, StubConfig]{
+			Constructor: func(
+				_ context.Context,
+				_ resource.Dependencies,
+				_ resource.Config,
+				logger golog.Logger,
+			) (sensor.Sensor, error) {
+				return newWifi(logger, wirelessInfoPath)
+			},
+		},
+	)
 }
 
 func newWifi(logger golog.Logger, path string) (sensor.Sensor, error) {
@@ -47,10 +54,17 @@ func newWifi(logger golog.Logger, path string) (sensor.Sensor, error) {
 }
 
 type wifi struct {
-	generic.Unimplemented
+	resource.Named
+	resource.TriviallyCloseable
+	resource.TriviallyReconfigurable
 	logger golog.Logger
 
 	path string // for testing
+}
+
+// DoCommand always returns unimplemented but can be implemented by the embedder.
+func (sensor *wifi) DoCommand(ctx context.Context, cmd map[string]interface{}) (map[string]interface{}, error) {
+	return nil, resource.ErrDoUnimplemented
 }
 
 // Readings returns Wifi strength statistics.
@@ -96,7 +110,7 @@ func (sensor *wifi) readingsByInterface(line string) (string, map[string]interfa
 
 	return iface, map[string]interface{}{
 		"link_quality": int(link),
-		"level_dBm":     int(level),
-		"noise_dBm":     int(noise),
+		"level_dBm":    int(level),
+		"noise_dBm":    int(noise),
 	}, nil
 }

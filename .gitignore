@@ -15,4 +15,4 @@
 # vendor/
 
 wifi
-module.tar.gz
+*.tar.gz
