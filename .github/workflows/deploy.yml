@@ -1,11 +1,6 @@
 on:
   workflow_dispatch:
   push:
-  release:
-    types: [released]
-
-env:
-  VERSION: ${{ github.event_name == 'release' && github.ref_name || format('0.0.0-{0}.{1}', github.ref_name, github.run_number) }}
 
 jobs:
   build:
@@ -22,6 +17,7 @@ jobs:
         GOARCH=arm64 make --always-make module.tar.gz && mv module.tar.gz module-arm64.tar.gz
         GOARCH=amd64 make --always-make module.tar.gz && mv module.tar.gz module-amd64.tar.gz
     - uses: viamrobotics/upload-module@main
+      # note: this workflow no long has an 'on: release' trigger. see ./build.yml
       if: github.event_name == 'release'
       with:
         module-path: module-arm64.tar.gz
