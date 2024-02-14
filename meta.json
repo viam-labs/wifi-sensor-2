@@ -1,7 +1,7 @@
 {
   "module_id": "d6d63dcf-baa3-443e-b23f-b33951b48a9e:golang-wifi-example",
   "visibility": "private",
-  "url": "https://github.com/viam-labs/wifi-sensor",
+  "url": "https://github.com/viam-labs/wifi-sensor-2",
   "description": "Example module for golang",
   "models": [
     {
